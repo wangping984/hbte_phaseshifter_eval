@@ -1,4 +1,5 @@
 calibrationLog
 __pycache__
 *.s*p
-data_20220920
+data_*
+*.csv
