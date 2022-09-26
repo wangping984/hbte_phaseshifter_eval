@@ -6,6 +6,7 @@ pa = PA("192.168.1.254")
 ch_num = 1
 pa.operateChannel(channelList=[ch_num], valueList=[0])
 pa.operateChannelPhase(channelList=[ch_num], phaseList=[1])
+print(pa.queryFrePoints())
 
 rm = visa.ResourceManager()
 N5244A = rm.open_resource('TCPIP0::192.168.1.2::inst0::INSTR')

@@ -2,12 +2,15 @@ from hbte import PA
 import time
 import pyvisa as visa
 import sys
+import numpy as np
 
 
 def hbte_eval_deg():
+    phase_cal_file = np.loadtxt('5000MHz_phase_cal.csv')
     pa = PA("192.168.1.254")
     ch_num = 1
     pa.operateChannel(channelList=[ch_num], valueList=[0])
+    pa.setCurrentFrePoints(fre = 2600)
 
     rm = visa.ResourceManager()
     N5244A = rm.open_resource("TCPIP0::192.168.1.2::inst0::INSTR")
@@ -21,6 +24,7 @@ def hbte_eval_deg():
     N5244A.write(':CALCulate:PARameter:SELect "%s"' % ("meas1"))
 
     for deg in range(360):
+        # deg_cal = deg - phase_cal_file[deg]
         pa.operateChannelPhase(channelList=[ch_num], phaseList=[deg])
         time.sleep(0.1)
         N5244A.write(":INITiate:IMMediate")
@@ -29,7 +33,7 @@ def hbte_eval_deg():
         N5244A.write("*WAI")
         N5244A.write(
             ':CALCulate:DATA:SNP:PORTs:SAVE "%s","%s"'
-            % ("1,2", "D:\\20220921\\A1B1_r7_deg" + str(deg) + ".s2p")
+            % ("1,2", "D:\\20220926\\A1B1_r1_deg" + str(deg) + ".s2p")
         )
         N5244A.write("*WAI")
         sys.stdout.write("Test progress: %d  of 359 deg \r" % (deg))

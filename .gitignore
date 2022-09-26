@@ -3,3 +3,4 @@ __pycache__
 *.s*p
 data_*
 *.csv
+*.zip
